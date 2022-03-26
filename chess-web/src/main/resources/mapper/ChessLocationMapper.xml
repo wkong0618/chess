@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chess.manage.web.mapper.ChessLocationMapper">
+    <resultMap id="BaseResultMap" type="com.chess.manage.web.model.ChessLocation">
+        <id column="id" jdbcType="NUMERIC" property="id" />
+        <result column="game_id" jdbcType="NUMERIC" property="gameId" />
+        <result column="role" jdbcType="NUMERIC" property="role" />
+        <result column="x" jdbcType="BOOLEAN" property="x" />
+        <result column="y" jdbcType="VARCHAR" property="y" />
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+        <result column="upd_time" jdbcType="TIMESTAMP" property="updTime" />
+        <result column="isactive" jdbcType="BOOLEAN" property="isactive" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, game_id, role,
+        x, y,
+        winner, add_time, upd_time,
+        isactive
+    </sql>
+
+    <select id="qryLocations" resultMap="BaseResultMap">
+        select
+            game_id,
+            role,
+            x, y
+        from chess_location
+        where game_id = #{gameId} and isactive = 1
+        order by add_time asc
+    </select>
+
+    <insert id="addLocation" parameterType="com.chess.manage.web.model.ChessLocation">
+        insert into chess_location (game_id, role, x, y)
+        values (#{gameId}, #{role}, #{x}, #{y})
+    </insert>
+
+</mapper>

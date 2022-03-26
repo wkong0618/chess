@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chess.manage.web.mapper.ChessInfoMapper">
+    <resultMap id="BaseResultMap" type="com.chess.manage.web.model.ChessInfo">
+        <id column="id" jdbcType="NUMERIC" property="id" />
+        <result column="game_id" jdbcType="NUMERIC" property="gameId" />
+        <result column="user_id" jdbcType="NUMERIC" property="userId" />
+        <result column="complete" jdbcType="BOOLEAN" property="complete" />
+        <result column="winner" jdbcType="VARCHAR" property="winner" />
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+        <result column="upd_time" jdbcType="TIMESTAMP" property="updTime" />
+        <result column="isactive" jdbcType="BOOLEAN" property="isactive" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, game_id, user_id,
+        complete,
+        winner, add_time, upd_time,
+        isactive
+    </sql>
+
+    <insert id="addGame" parameterType="com.chess.manage.web.model.ChessInfo">
+        insert into chess_info (game_id)
+        values (#{gameId})
+    </insert>
+
+    <select id="qryAllGames" resultType="com.chess.manage.web.dto.GameDetail">
+        select
+        game_id id,
+        complete,
+        winner
+        from chess_info
+        where isactive = 1;
+    </select>
+
+    <select id="qryGame" resultType="com.chess.manage.web.dto.GameDetail">
+        select
+            game_id id,
+            complete,
+            winner
+        from chess_info
+        where game_id = #{gameId} and isactive = 1;
+    </select>
+
+    <update id="updateGameStatus">
+        update chess_info
+        set complete = #{complete}, winner = #{winner},
+            upd_time = datetime('now','localtime')
+        where game_id = #{gameId} and isactive = 1
+    </update>
+
+</mapper>
